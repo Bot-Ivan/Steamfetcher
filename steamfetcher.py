@@ -1,13 +1,13 @@
-import flask
-import Flask, render_template
-from falsk_wtf import Flaskform
+
+import flask, render_template
+from flask_wtf import Flaskform
 from wtforms import IntegerField, SubmitField, SelectField, validators
 import os
 from wtforms.validators import NumberRange
 import main_functions
 import requests
 
-app = Flask(__name__)
+app = flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
 def get_key(filename, api_name):
@@ -20,3 +20,4 @@ url = "https://api.steampowered.com"
 
 #class to make the registration form for users to enter information
 class Registration(Flaskform):
+    pass

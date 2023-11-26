@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8"
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        <title> Input Form</title>
+    </head>
+    <body>
+        <h1>Input Form</h1>
+        <form method = "post" action = "{{url_for('process_form') }}">
+            <!-- Form fields here-->
+            <!-- these ones are just placeholder examplesvvv-->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+        <br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1">
+        <br>
+        <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
