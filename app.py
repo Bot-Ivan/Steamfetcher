@@ -1,5 +1,6 @@
 
-import flask, render_template
+import flask
+from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import Flaskform
 from wtforms import IntegerField, SubmitField, SelectField, validators
 import os

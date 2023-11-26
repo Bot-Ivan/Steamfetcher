@@ -10,15 +10,18 @@
         <form method = "post" action = "{{url_for('process_form') }}">
             <!-- Form fields here-->
             <!-- these ones are just placeholder examplesvvv-->
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+        <label for="Title">Title:</label>
+        <input type="text" id="Title" name="Title" required>
         <br>
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date">
+        <label for="Player">Player:</label>
+        <input type="text" id="Player" name="Player">
         <br>
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1">
-        <br>
+        <label for="genre"> Select Genre:</label>
+        <select id = "genre" name = "genre">
+            <!-- This is hardcoded right now, we need to see if we can use the api to fill out the genre drop down list with an api call-->
+            <option value = "action"> Action</option>
+            <option value = "adventure"> Adventure</option>
+        </select>
         <button type="submit">Submit</button>
         </form>
     </body>
