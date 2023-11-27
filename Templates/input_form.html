@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset = "UTF-8"
-        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-        <title> Input Form</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam user information</title>
+    
+        
     </head>
     <body>
-        <h1>Input Form</h1>
-        <form method = "post" action = "{{url_for('process_form') }}">
-            <!-- Form fields here-->
-            <!-- these ones are just placeholder examplesvvv-->
-        <label for="Title">Title:</label>
-        <input type="text" id="Title" name="Title" required>
-        <br>
-        <label for="Player">Player:</label>
-        <input type="text" id="Player" name="Player">
-        <br>
-        <label for="genre"> Select Genre:</label>
-        <select id = "genre" name = "genre">
-            <!-- This is hardcoded right now, we need to see if we can use the api to fill out the genre drop down list with an api call-->
-            <option value = "action"> Action</option>
-            <option value = "adventure"> Adventure</option>
-        </select>
-        <button type="submit">Submit</button>
-        </form>
+        <div class = "container">
+            <form method = "POST" action = "">
+                <h1> Steam user information</h1>
+                {{ form.csrf_token}}
+                <!-- Text box for Steam User Parameter -->
+                <label for="{{ form.steamID.id }}">Steam User Parameter:</label>
+                {{ form.steamID(class="form-input") }}
+            
+                <!-- Submit button -->
+                {{ form.submit(class="form-submit") }}
+            </form>
+        </div>
     </body>
 </html>
