@@ -1,3 +1,4 @@
+<!--input_form.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,9 +14,9 @@
                 <h1> Steam user information</h1>
                 {{ form.csrf_token}}
                 <!-- Text box for Steam User Parameter -->
-                <label for="{{ form.steamID.id }}">Steam User Parameter:</label>
+                <label for="{{ form.steamID.id }}">Steam ID</label>
                 {{ form.steamID(class="form-input") }}
-            
+
                 <!-- Submit button -->
                 {{ form.submit(class="form-submit") }}
             </form>
