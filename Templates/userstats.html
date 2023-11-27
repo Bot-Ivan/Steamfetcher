@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam User Info</title>
+</head>
+<body>
+    <div class="container">
+        <h1>User Stats</h1>
+
+        <h2>Steam name</h2>
+{% if playersummaries_data %}
+    <p>{{ playersummaries_data['response']['players'][0]['personaname'] }}</p>
+    <img src="{{ playersummaries_data['response']['players'][0]['avatarfull'] }}">
+    <h2>Visibility</h2>
+    {% if playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 1 %}
+        <p>The profile is not visible</p>
+    {% elif playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 3 %}
+        <p>The profile is public</p>
+    {% endif %}
+{% else %}
+    <p>No user playersummaries_data available.</p>
+{% endif %}
+
+
+        <h2>Steam status</h2>
+        {% if playersummaries_data %}
+            {% if playersummaries_data['response']['players'][0]['personastate'] == 0 %}
+                <p>Offline</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 1 %}
+                <p>Online</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 2 %}
+                <p>Busy</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 3 %}
+                <p>Away</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 4 %}
+                <p>Snooze</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 5 %}
+                <p>Looking to trade</p>
+            {% elif playersummaries_data['response']['players'][0]['personastate'] == 6 %}
+                <p>Looking to play</p>
+            {% else %}
+                <p>No playersummaries_data available.</p>
+            {% endif %}
+        {% endif %}
+        <h2> Owned Games </h2>
+            {% if ownedgames_data %}
+                <p>{{ ownedgames_data }}</p>
+            {% endif %}
+
+    </div>
+</body>
+
+</html>
