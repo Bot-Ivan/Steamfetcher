@@ -1,25 +1,94 @@
-<!--input_form.html-->
+<!-- input_form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam user information</title>
-    
-        
-    </head>
-    <body>
-        <div class = "container">
-            <form method = "POST" action = "">
-                <h1> Steam user information</h1>
-                {{ form.csrf_token}}
-                <!-- Text box for Steam User Parameter -->
-                <label for="{{ form.steamID.id }}">Steam ID</label>
-                {{ form.steamID(class="form-input") }}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a; 
+            color: #ff9900; 
+            margin: 0;
+            padding: 0;
+        }
 
-                <!-- Submit button -->
-                {{ form.submit(class="form-submit") }}
-            </form>
-        </div>
-    </body>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #ff9900; 
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #ff9900; 
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .form-submit {
+            background-color: #ff9900; 
+            color: #1a1a1a; 
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-submit:hover {
+            background-color: #e68a00; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="">
+            <h1>Steam user information</h1>
+            {{ form.csrf_token }}
+
+            <!-- Textbox for Steam User Parameter -->
+            <label for="{{ form.steamID.id }}">Steam ID</label>
+            {{ form.steamID(class="form-input") }}
+
+            <!-- BooleranField for show_game_info -->
+            <div>
+                <label>
+                    {{ form.show_game_info }}
+                    Show Game Info
+                </label>
+            </div>
+
+            <!-- BooleanField for show_status -->
+            <div>
+                <label>
+                    {{ form.show_status }}
+                    Show Status
+                </label>
+            </div>
+
+            <!-- Submit button -->
+            {{ form.submit(class="form-submit") }}
+        </form>
+    </div>
+</body>
 </html>
