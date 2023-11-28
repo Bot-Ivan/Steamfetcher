@@ -1,55 +1,164 @@
+<!-- userstats.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam User Info</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a; 
+            color: #ff9900; 
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+            border-radius: 8px;
+        }
+
+        h1, h2, h4 {
+            color: #ff9900; 
+        }
+
+        p {
+            color: #ffcc66; 
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        /* Initially hide the table */
+        #gameTable {
+            display: none;
+        }
+
+        /* Show the table when the checkbox is checked */
+        #showTable:checked ~ #gameTable {
+            display: table;
+        }
+
+        
+        #gameTable table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #gameTable th, #gameTable td {
+            border: 1px solid #ffcc66; 
+            padding: 8px;
+            text-align: left;
+        }
+
+        #gameTable th {
+            background-color: #fcfcfc; 
+        }
+
+        label {
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            color: #ff9900; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>User Stats</h1>
 
         <h2>Steam name</h2>
-{% if playersummaries_data %}
-    <p>{{ playersummaries_data['response']['players'][0]['personaname'] }}</p>
-    <img src="{{ playersummaries_data['response']['players'][0]['avatarfull'] }}">
-    <h2>Visibility</h2>
-    {% if playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 1 %}
-        <p>The profile is not visible</p>
-    {% elif playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 3 %}
-        <p>The profile is public</p>
-    {% endif %}
-{% else %}
-    <p>No user playersummaries_data available.</p>
-{% endif %}
-
-
-        <h2>Steam status</h2>
         {% if playersummaries_data %}
-            {% if playersummaries_data['response']['players'][0]['personastate'] == 0 %}
-                <p>Offline</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 1 %}
-                <p>Online</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 2 %}
-                <p>Busy</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 3 %}
-                <p>Away</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 4 %}
-                <p>Snooze</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 5 %}
-                <p>Looking to trade</p>
-            {% elif playersummaries_data['response']['players'][0]['personastate'] == 6 %}
-                <p>Looking to play</p>
-            {% else %}
-                <p>No playersummaries_data available.</p>
+            <p>{{ playersummaries_data['response']['players'][0]['personaname'] }}</p>
+            <img src="{{ playersummaries_data['response']['players'][0]['avatarfull'] }}">
+            <h2>Visibility</h2>
+            {% if playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 1 %}
+                <p>The profile is not visible</p>
+            {% elif playersummaries_data['response']['players'][0]['communityvisibilitystate'] == 3 %}
+                <p>The profile is public</p>
+            {% endif %}
+        {% else %}
+            <p>No user playersummaries_data available.</p>
+        {% endif %}
+
+        <!-- Display if show status checkbox was chekced -->
+        {% if show_status %}
+            <h2>Steam Status</h2>
+            {% if playersummaries_data %}
+                {% if playersummaries_data['response']['players'][0]['personastate'] == 0 %}
+                    <p>Offline</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 1 %}
+                    <p>Online</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 2 %}
+                    <p>Busy</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 3 %}
+                    <p>Away</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 4 %}
+                    <p>Snooze</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 5 %}
+                    <p>Looking to trade</p>
+                {% elif playersummaries_data['response']['players'][0]['personastate'] == 6 %}
+                    <p>Looking to play</p>
+                {% else %}
+                    <p>No playersummaries_data available.</p>
+                {% endif %}
             {% endif %}
         {% endif %}
-        <h2> Owned Games </h2>
-            {% if ownedgames_data %}
-                <p>{{ ownedgames_data }}</p>
-            {% endif %}
 
+        <!-- Display if show_game_info chekcbox was checked -->
+        {% if show_game_info %}
+            <h2>Owned Games</h2>
+            {% if ownedgames_data and ownedgames_data['response'] and ownedgames_data['response']['games'] %}
+                <p>Total games owned: {{ ownedgames_data['response']['game_count'] }}</p>
+                {% set top_games = ownedgames_data['response']['games'] | sort(attribute='playtime_forever', reverse=True) %}
+                {% if top_games %}
+                    {% if top_games|length > 10 %}
+                        <h4>Top games by playtime</h4>
+
+                        
+                        <input type="checkbox" id="showTable">
+                        <label for="showTable">Show Table</label>
+
+                        <!-- Table container -->
+                        <div id="gameTable">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Game</th>
+                                        <th>Playtime (minutes)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for game in top_games[:10] %}
+                                        <tr>
+                                            <td>{{ game['name'] }}</td>
+                                            <td>{{ game['playtime_forever'] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>No games owned.</p>
+                    {% endif %}
+                {% else %}
+                    <p>No games available.</p>
+                {% endif %}
+            {% else %}
+                <p>Owned games data not available</p>
+            {% endif %}
+        {% endif %}
+
+        
     </div>
 </body>
-
 </html>

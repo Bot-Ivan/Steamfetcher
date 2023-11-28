@@ -3,6 +3,7 @@ import flask
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, StringField
+from wtforms import BooleanField  
 import requests
 from requests.exceptions import JSONDecodeError
 import main_functions
@@ -21,7 +22,10 @@ url = "https://api.steampowered.com"
 #class to make the registration form for users to enter information
 class UserInfo(FlaskForm):
     steamID = StringField("Username")
-    submit = SubmitField('Submit')
+    show_game_info = BooleanField("Show Game Info")
+    show_status = BooleanField("Show Status")
+    submit = SubmitField("Submit")
+    
 
 def get_playersummaries_data(steam_api_key, parameter_entered):
     base_part = "https://api.steampowered.com/"
@@ -33,9 +37,9 @@ def get_playersummaries_data(steam_api_key, parameter_entered):
 
     try:
         response = requests.get(full_url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
+        response.raise_for_status()  # Raises an HTTPError for bad responses (4xx or 5xx)
 
-        # Check if the response is not empty
+        # Checks if the response is not empty
         if response.text:
             playersummaries_data = response.json()
             return playersummaries_data
@@ -70,9 +74,9 @@ def get_ownedgames_data(steam_api_key, parameter_entered):
 
     try:
         response = requests.get(full_url, params=params)
-        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
+        response.raise_for_status()  # Raises an HTTPError for bad responses (4xx or 5xx)
 
-        # Check if the response is not empty
+        # Checcks if the response is not empty
         if response.text:
             ownedgames_data = response.json()
             return ownedgames_data
@@ -87,17 +91,20 @@ def get_ownedgames_data(steam_api_key, parameter_entered):
         print(f"Error making the request: {e}")
         return None
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = UserInfo()
+
     if request.method == "POST" and form.validate_on_submit():
-        parameter_entered = form.steamID.data  # Change to steamID
+        parameter_entered = form.steamID.data
         playersummaries_data = get_playersummaries_data(steam_api_key, parameter_entered)
         ownedgames_data = get_ownedgames_data(steam_api_key, parameter_entered)
-        print("playersummaries_data:", playersummaries_data)
-        print ("ownedgames_data:", ownedgames_data)
-        return render_template("userstats.html", playersummaries_data = playersummaries_data, ownedgames_data = ownedgames_data, form=form)
+
+        show_game_info = form.show_game_info.data
+        show_status = form.show_status.data
+
+        return render_template("userstats.html", playersummaries_data=playersummaries_data, ownedgames_data=ownedgames_data, show_game_info=show_game_info, show_status=show_status, form=form)
+
     return render_template("input_form.html", form=form)
     
 if __name__ == "__main__":
